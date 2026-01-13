@@ -9,17 +9,19 @@
     
     <style>
         :root {
-            --primary: #064E3B; /* Emerald Green */
-            --secondary: #F59E0B; /* Golden Yellow */
+            --primary: #064E3B;
+            --secondary: #F59E0B;
             --bg-light: #F3F4F6;
             --white: #FFFFFF;
             --text-dark: #1F2937;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        /* ANTI-COPY & PROTECTION */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-user-select: none; user-select: none; }
+        input, textarea, select { user-select: text; }
+
         body { background-color: var(--bg-light); color: var(--text-dark); padding-bottom: 80px; }
 
-        /* HERO SECTION */
         .hero {
             background: linear-gradient(135deg, var(--primary), #022c22);
             color: var(--white);
@@ -29,300 +31,156 @@
             box-shadow: 0 10px 20px rgba(6, 78, 59, 0.2);
             text-align: center;
         }
-        .logo { font-size: 1.5rem; font-weight: 700; color: var(--secondary); letter-spacing: 1px; margin-bottom: 10px; }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--secondary); margin-bottom: 10px; }
         .hero h1 { font-size: 1.8rem; line-height: 1.2; margin-bottom: 10px; }
         .hero p { font-size: 0.9rem; opacity: 0.9; margin-bottom: 20px; }
 
-        /* SERVICE CARDS */
-        .services {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            padding: 20px;
-            margin-top: -30px;
-        }
+        .services { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; margin-top: -30px; }
         .card {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: transform 0.2s, border 0.2s;
-            cursor: pointer;
-            border: 2px solid transparent;
+            background: var(--white); padding: 20px; border-radius: 15px; text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.3s; cursor: pointer; border: 2px solid transparent;
         }
-        .card:hover, .card.active {
-            transform: scale(1.03);
-            border-color: var(--secondary);
-            background: #FFFBEB;
-        }
+        .card.active { border-color: var(--secondary); background: #FFFBEB; transform: scale(1.05); }
         .card i { font-size: 1.5rem; color: var(--primary); margin-bottom: 10px; }
         .card h3 { font-size: 0.9rem; font-weight: 600; }
 
-        /* FORM SECTION */
-        .form-section {
-            padding: 20px;
-            display: none; /* Hidden by default */
-            animation: slideUp 0.5s ease;
-        }
-        
+        .form-section { padding: 20px; display: none; animation: slideUp 0.5s ease; }
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; color: var(--primary); }
         .input-group input, .input-group textarea, .input-group select {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            outline: none;
-            transition: border-color 0.3s;
+            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 0.9rem; outline: none;
         }
-        .input-group input:focus { border-color: var(--primary); }
 
-        /* GPS BUTTON */
         .gps-btn {
-            background-color: #ECFDF5;
-            color: var(--primary);
-            border: 1px dashed var(--primary);
-            padding: 10px;
-            width: 100%;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: 0.3s;
+            background-color: #ECFDF5; color: var(--primary); border: 1px dashed var(--primary);
+            padding: 10px; width: 100%; border-radius: 10px; cursor: pointer; margin-bottom: 10px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .gps-btn:hover { background-color: #D1FAE5; }
-        .gps-btn i { animation: pulse 1.5s infinite; }
 
-        /* PAYMENT & SUMMARY */
         .summary-box {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 20px;
-            text-align: center;
-            border: 1px solid #eee;
+            background: var(--white); padding: 20px; border-radius: 15px; margin-top: 20px; text-align: center; border: 1px solid #eee;
         }
         .price-tag { font-size: 1.5rem; font-weight: 700; color: var(--secondary); margin: 10px 0; }
-        .qris-placeholder {
-            width: 150px;
-            height: 150px;
-            background: #eee;
-            margin: 10px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            color: #888;
-            border-radius: 10px;
-        }
 
-        /* FLOATING ACTION BUTTON */
         .fab-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: var(--white);
-            padding: 15px 20px;
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
-            display: none; /* Hidden initially */
-            z-index: 100;
+            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--white);
+            padding: 15px 20px; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); display: none; z-index: 100;
         }
         .btn-wa {
-            background-color: var(--secondary);
-            color: var(--primary);
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            background-color: var(--secondary); color: var(--primary); width: 100%; padding: 15px;
+            border: none; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 1rem;
         }
 
-        /* ANIMATIONS */
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
     <div class="hero">
         <div class="logo"><i class="fas fa-box"></i> TITIP SALATIGA</div>
         <h1>Barang Aman,<br>Liburan Tenang</h1>
-        <p>Solusi titip & pindahan anak kos. Sat-set tanpa ribet!</p>
+        <p>Solusi mudik mahasiswa UKSW & UIN.</p>
     </div>
 
     <div class="services">
-        <div class="card" onclick="selectService('Storage', 149000)">
-            <i class="fas fa-warehouse"></i>
-            <h3>Titip Barang</h3>
-        </div>
-        <div class="card" onclick="selectService('Moving', 250000)">
-            <i class="fas fa-truck-pickup"></i>
-            <h3>Pindahan</h3>
-        </div>
-        <div class="card" onclick="selectService('Luggage', 50000)">
-            <i class="fas fa-suitcase-rolling"></i>
-            <h3>Titip Koper</h3>
-        </div>
-        <div class="card" onclick="selectService('Packing', 75000)">
-            <i class="fas fa-box-open"></i>
-            <h3>Bantu Packing</h3>
-        </div>
+        <div class="card" onclick="selectService('Storage', 149000)"><i class="fas fa-warehouse"></i><h3>Titip Barang</h3></div>
+        <div class="card" onclick="selectService('Moving', 250000)"><i class="fas fa-truck-pickup"></i><h3>Pindahan</h3></div>
+        <div class="card" onclick="selectService('Luggage', 50000)"><i class="fas fa-suitcase-rolling"></i><h3>Titip Koper</h3></div>
+        <div class="card" onclick="selectService('Packing', 75000)"><i class="fas fa-box-open"></i><h3>Bantu Packing</h3></div>
     </div>
 
     <div class="form-section" id="bookingForm">
         <h3 style="margin-bottom: 15px; color: var(--primary);">Data Penjemputan</h3>
-        
+        <div class="input-group"><label>Nama Lengkap</label><input type="text" id="userName" placeholder="Nama panggilanmu"></div>
+        <div class="input-group"><label>Nomor WhatsApp</label><input type="tel" id="userPhone" placeholder="08xxxxxxxx"></div>
         <div class="input-group">
-            <label>Nama Lengkap</label>
-            <input type="text" id="userName" placeholder="Nama panggilanmu">
+            <label>Lokasi Kos/Rumah</label>
+            <button class="gps-btn" onclick="getGPS()"><i class="fas fa-map-marker-alt"></i> Deteksi Lokasi GPS</button>
+            <textarea id="userAddress" rows="2" placeholder="Alamat lengkap..."></textarea>
         </div>
-
-        <div class="input-group">
-            <label>Lokasi Penjemputan</label>
-            <button class="gps-btn" onclick="getGPS()">
-                <i class="fas fa-map-marker-alt"></i> Deteksi Lokasi Saya (GPS)
-            </button>
-            <textarea id="userAddress" rows="2" placeholder="Alamat otomatis terisi..." style="margin-top: 10px;"></textarea>
-        </div>
-
-        <div class="input-group">
-            <label>Ancer-ancer / Patokan</label>
-            <input type="text" id="userLandmark" placeholder="Contoh: Gerbang hitam, depan laundry...">
-        </div>
-
-        <div id="storageFields" style="display:none;">
-            <div class="input-group">
-                <label>Durasi Titip</label>
-                <select id="duration">
-                    <option value="1 Bulan">1 Bulan</option>
-                    <option value="2 Bulan">2 Bulan</option>
-                    <option value="Liburan Semester">Paket Liburan</option>
-                </select>
-            </div>
-        </div>
-
+        <div class="input-group"><label>Patokan (Ancer-ancer)</label><input type="text" id="userLandmark" placeholder="Contoh: Depan Laundry Biru"></div>
         <div class="summary-box">
-            <h4>Estimasi Mulai Dari</h4>
+            <h4>Estimasi Biaya</h4>
             <div class="price-tag" id="priceDisplay">Rp 149.000</div>
-            <p style="font-size: 0.8rem; color: #666;">Scan QRIS di bawah untuk DP (Opsional)</p>
-            
-            <img src="https://via.placeholder.com/150?text=QRIS+CODE" alt="QRIS" style="width: 150px; margin: 10px auto; border-radius: 10px;">
-            
-            <p style="font-size: 0.75rem; color: #888;">*Klik konfirmasi untuk kirim detail ke WA</p>
+            <p style="font-size: 0.75rem; color: #888;">*Data otomatis tersimpan di sistem kami.</p>
         </div>
     </div>
 
     <div class="fab-container" id="fabContainer">
-        <button class="btn-wa" onclick="sendToWA()">
-            <i class="fab fa-whatsapp"></i> Konfirmasi Booking
+        <button class="btn-wa" id="submitBtn" onclick="handleBooking()">
+            <i class="fab fa-whatsapp"></i> Konfirmasi Booking ke WA
         </button>
     </div>
 
-    <script>
-        let selectedService = '';
-        let basePrice = 0;
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // 1. LOGIC PILIH LAYANAN
-        function selectService(service, price) {
-            selectedService = service;
-            basePrice = price;
+        // API KEY FIREBASE LU
+        const firebaseConfig = {
+            apiKey: "AIzaSyAXN8xeNxHwbBxSzMM3c5wpJsoOkfr9LSs",
+            authDomain: "titip-salatiga.firebaseapp.com",
+            projectId: "titip-salatiga",
+            storageBucket: "titip-salatiga.firebasestorage.app",
+            messagingSenderId: "74240158872",
+            appId: "1:74240158872:web:5c0fcc17c7071eae5a62b1"
+        };
 
-            // Reset kartu aktif
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let sSvc = ''; let sPrc = 0;
+
+        window.selectService = (name, price) => {
+            sSvc = name; sPrc = price;
             document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
             event.currentTarget.classList.add('active');
-
-            // Tampilkan Form
             document.getElementById('bookingForm').style.display = 'block';
             document.getElementById('fabContainer').style.display = 'block';
-            document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth' });
-
-            // Update Harga
             document.getElementById('priceDisplay').innerText = 'Rp ' + price.toLocaleString('id-ID');
+            document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth' });
+        };
 
-            // Logic Field Tambahan
-            if(service === 'Storage') {
-                document.getElementById('storageFields').style.display = 'block';
-            } else {
-                document.getElementById('storageFields').style.display = 'none';
-            }
-        }
-
-        // 2. LOGIC GPS (OpenStreetMap Nominatim - GRATIS)
-        function getGPS() {
-            const addressField = document.getElementById('userAddress');
-            const btn = document.querySelector('.gps-btn');
-            
+        window.getGPS = () => {
             if (navigator.geolocation) {
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sedang mencari lokasi...';
-                
-                navigator.geolocation.getCurrentPosition(async (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-                    
-                    try {
-                        // Reverse Geocoding pakai API Gratis (Nominatim)
-                        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
-                        const data = await response.json();
-                        
-                        addressField.value = data.display_name; // Isi alamat otomatis
-                        btn.innerHTML = '<i class="fas fa-check"></i> Lokasi Ditemukan!';
-                        btn.style.backgroundColor = '#D1FAE5';
-                    } catch (error) {
-                        addressField.value = `Koordinat: ${lat}, ${lon} (Gagal ambil nama jalan, isi manual ya)`;
-                        btn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Gagal convert alamat';
-                    }
-                }, () => {
-                    alert("Gagal mendeteksi lokasi. Pastikan GPS aktif!");
-                    btn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Coba Lagi';
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
+                    const d = await res.json();
+                    document.getElementById('userAddress').value = d.display_name;
                 });
-            } else {
-                alert("Browser tidak support GPS.");
             }
-        }
+        };
 
-        // 3. LOGIC KIRIM KE WHATSAPP
-        function sendToWA() {
+        window.handleBooking = async () => {
             const name = document.getElementById('userName').value;
-            const address = document.getElementById('userAddress').value;
-            const landmark = document.getElementById('userLandmark').value;
-            const duration = document.getElementById('duration').value;
-            
-            if(!name || !address) {
-                alert("Harap isi Nama dan Alamat dulu ya, Bro!");
-                return;
+            const phone = document.getElementById('userPhone').value;
+            const addr = document.getElementById('userAddress').value;
+            const land = document.getElementById('userLandmark').value;
+            const btn = document.getElementById('submitBtn');
+
+            if(!name || !phone || !addr) return alert("Lengkapi data dulu ya!");
+
+            btn.disabled = true; btn.innerText = "Sabar, lagi simpen data...";
+
+            try {
+                // SIMPAN KE FIREBASE (ANTI-GHOSTING)
+                const doc = await addDoc(collection(db, "orders"), {
+                    nama: name, wa: phone, alamat: addr, patokan: land,
+                    layanan: sSvc, harga: sPrc, time: serverTimestamp()
+                });
+
+                // REDIRECT KE WA LU
+                const myWA = "62895330091464"; // <--- NOMOR WA LU UDAH GUA UPDATE!
+                const orderID = doc.id.substring(0,5).toUpperCase();
+                const text = `*ORDER #TS-${orderID}*%0aHalo Titip Salatiga! Saya mau booking layanan *${sSvc}*.%0a%0aNama: ${name}%0aWA: ${phone}%0aAlamat: ${addr}`;
+                
+                window.location.href = `https://wa.me/${myWA}?text=${text}`;
+
+            } catch (e) {
+                alert("Waduh, koneksi database gagal. Cek Rules di Firebase lu!");
+                btn.disabled = false; btn.innerText = "Konfirmasi Booking ke WA";
             }
-
-            // GANTI NOMOR WA LU DISINI (Format: 628xxx)
-            const phoneOwner = "6281234567890"; 
-
-            let message = `*HALO TITIP SALATIGA!* 👋%0a`;
-            message += `Saya mau booking layanan sat-set nih.%0a%0a`;
-            message += `📦 *Layanan:* ${selectedService}%0a`;
-            message += `👤 *Nama:* ${name}%0a`;
-            message += `📍 *Lokasi:* ${address}%0a`;
-            message += `🏠 *Patokan:* ${landmark}%0a`;
-            
-            if(selectedService === 'Storage') {
-                message += `⏳ *Durasi:* ${duration}%0a`;
-            }
-
-            message += `💰 *Estimasi:* Rp ${basePrice.toLocaleString('id-ID')}%0a%0a`;
-            message += `Mohon info ketersediaan slot ya!`;
-
-            window.open(`https://wa.me/${phoneOwner}?text=${message}`, '_blank');
-        }
+        };
     </script>
 </body>
 </html>
