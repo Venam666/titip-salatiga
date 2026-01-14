@@ -27,7 +27,7 @@
         .form-section { padding: 20px; display: none; animation: slideUp 0.5s ease; }
         .input-group { margin-bottom: 15px; }
         .input-group label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 5px; color: var(--primary); }
-        .input-group input, .input-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; outline: none; font-size: 0.9rem; }
+        .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; outline: none; font-size: 0.9rem; background: #fff; }
         
         .gps-btn { background: #ECFDF5; color: var(--primary); border: 1px dashed var(--primary); padding: 12px; width: 100%; border-radius: 10px; cursor: pointer; margin-bottom: 10px; font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 8px;}
         
@@ -53,11 +53,11 @@
     </div>
 
     <div class="services">
-        <!-- Perhatikan fungsi sel() sekarang dipanggil dari script global -->
-        <div class="card" onclick="sel('Storage', 149000)"><i class="fas fa-warehouse"></i><h3>Titip Barang</h3></div>
-        <div class="card" onclick="sel('Moving', 250000)"><i class="fas fa-truck-pickup"></i><h3>Pindahan</h3></div>
-        <div class="card" onclick="sel('Luggage', 50000)"><i class="fas fa-suitcase-rolling"></i><h3>Titip Koper</h3></div>
-        <div class="card" onclick="sel('Packing', 75000)"><i class="fas fa-box-open"></i><h3>Bantu Packing</h3></div>
+        <!-- Fungsi sel() menerima Nama, Harga Dasar, dan Tipe (duration/fixed) -->
+        <div class="card" onclick="sel('Storage', 149000, 'monthly')"><i class="fas fa-warehouse"></i><h3>Titip Barang</h3></div>
+        <div class="card" onclick="sel('Moving', 250000, 'fixed')"><i class="fas fa-truck-pickup"></i><h3>Pindahan</h3></div>
+        <div class="card" onclick="sel('Luggage', 50000, 'weekly')"><i class="fas fa-suitcase-rolling"></i><h3>Titip Koper</h3></div>
+        <div class="card" onclick="sel('Packing', 75000, 'fixed')"><i class="fas fa-box-open"></i><h3>Bantu Packing</h3></div>
     </div>
 
     <div class="form-section" id="bookingForm">
@@ -65,6 +65,18 @@
         <div class="input-group"><label>Nama Lengkap</label><input type="text" id="userName" placeholder="Nama panggilanmu"></div>
         <div class="input-group"><label>Nomor WhatsApp</label><input type="tel" id="userPhone" placeholder="08xxxxxxxx"></div>
         
+        <!-- Field Durasi (Hanya muncul untuk Storage & Luggage) -->
+        <div class="input-group" id="durationBox" style="display:none;">
+            <label>Durasi Titip</label>
+            <select id="userDuration" onchange="calcTotal()">
+                <option value="1 Minggu">1 Minggu</option>
+                <option value="2 Minggu">2 Minggu</option>
+                <option value="3 Minggu">3 Minggu</option>
+                <option value="1 Bulan" selected>1 Bulan</option>
+                <option value="2 Bulan">2 Bulan</option>
+            </select>
+        </div>
+
         <div class="input-group">
             <label>Lokasi Penjemputan</label>
             <button class="gps-btn" id="gBtn" onclick="getGPS()"><i class="fas fa-map-marker-alt"></i> Deteksi Lokasi Saya (GPS)</button>
@@ -87,33 +99,80 @@
         </button>
     </div>
 
-    <!-- SCRIPT 1: LOGIKA UI GLOBAL (Agar tidak error saat diklik) -->
+    <!-- SCRIPT 1: LOGIKA UI GLOBAL -->
     <script>
         // Variabel Global
         let sSvc = "";
-        let sPrc = 0;
+        let sBasePrc = 0;
+        let sTotalPrc = 0;
+        let sType = ""; // 'fixed', 'monthly', 'weekly'
 
         // Fungsi Pilih Layanan
-        function sel(name, price) {
+        function sel(name, basePrice, type) {
             sSvc = name; 
-            sPrc = price;
+            sBasePrc = basePrice;
+            sType = type;
             
-            // UI Feedback
+            // UI Feedback (Card Active)
             document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
             event.currentTarget.classList.add('active');
             
-            // Tampilkan Form
+            // Tampilkan Form & Sembunyikan Instruksi
             document.getElementById('bookingForm').style.display = 'block';
             document.getElementById('fabContainer').style.display = 'block';
-            document.getElementById('instructionBox').style.opacity = '0'; // Sembunyikan instruksi
+            document.getElementById('instructionBox').style.opacity = '0';
             
-            // Update Harga
-            document.getElementById('priceDisplay').innerText = 'Rp ' + price.toLocaleString('id-ID');
+            // Cek apakah butuh input durasi
+            const durBox = document.getElementById('durationBox');
+            const durSel = document.getElementById('userDuration');
+            
+            if (type === 'monthly' || type === 'weekly') {
+                durBox.style.display = 'block';
+                // Reset select ke default yang logis
+                durSel.value = (type === 'monthly') ? "1 Bulan" : "1 Minggu";
+            } else {
+                durBox.style.display = 'none';
+            }
+            
+            // Hitung Harga Awal
+            calcTotal();
             
             // Scroll ke Form
             setTimeout(() => {
                 document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth' });
             }, 100);
+        }
+
+        // Fungsi Kalkulator Harga
+        function calcTotal() {
+            const durVal = document.getElementById('userDuration').value;
+            let finalPrice = sBasePrc;
+
+            if (sType === 'fixed') {
+                finalPrice = sBasePrc;
+            } 
+            else if (sType === 'monthly') {
+                // Harga dasar Storage diasumsikan per 1 Bulan (149rb)
+                if (durVal === '1 Minggu') finalPrice = 50000;
+                else if (durVal === '2 Minggu') finalPrice = 90000;
+                else if (durVal === '3 Minggu') finalPrice = 120000;
+                else if (durVal === '1 Bulan') finalPrice = sBasePrc;
+                else if (durVal === '2 Bulan') finalPrice = sBasePrc * 2;
+            } 
+            else if (sType === 'weekly') {
+                // Harga dasar Luggage diasumsikan per 1 Minggu (50rb)
+                let multiplier = 1;
+                if (durVal === '1 Minggu') multiplier = 1;
+                else if (durVal === '2 Minggu') multiplier = 2;
+                else if (durVal === '3 Minggu') multiplier = 3;
+                else if (durVal === '1 Bulan') multiplier = 3.5; // Diskon dikit
+                else if (durVal === '2 Bulan') multiplier = 7;
+                
+                finalPrice = sBasePrc * multiplier;
+            }
+
+            sTotalPrc = finalPrice;
+            document.getElementById('priceDisplay').innerText = 'Rp ' + finalPrice.toLocaleString('id-ID');
         }
 
         // Fungsi GPS
@@ -163,23 +222,25 @@
             appId: "1:74240158872:web:5c0fcc17c7071eae5a62b1"
         };
 
-        // Inisialisasi Firebase
         let db;
         try {
             const app = initializeApp(firebaseConfig);
             db = getFirestore(app);
             console.log("Firebase Connected");
-        } catch (e) {
-            console.error("Firebase Error:", e);
-        }
+        } catch (e) { console.error("Firebase Error:", e); }
 
-        // Assign fungsi booking ke window agar bisa dipanggil HTML
         window.handleBooking = async () => {
             const name = document.getElementById('userName').value;
             const phone = document.getElementById('userPhone').value;
             const addr = document.getElementById('userAddress').value;
             const land = document.getElementById('userLandmark').value;
             const btn = document.getElementById('submitBtn');
+            
+            // Ambil durasi jika inputnya terlihat
+            let durationVal = "-";
+            if (document.getElementById('durationBox').style.display !== 'none') {
+                durationVal = document.getElementById('userDuration').value;
+            }
 
             if(!name || !phone || !addr) return alert("Lengkapi data nama, WA, dan alamat dulu ya!");
             if(!sSvc) return alert("Pilih layanan dulu!");
@@ -189,29 +250,33 @@
 
             try {
                 let orderID = "OFFLINE";
-                
-                // Coba simpan ke DB jika koneksi ada
                 if (db) {
                     const docRef = await addDoc(collection(db, "orders"), {
                         nama: name, wa: phone, alamat: addr, patokan: land,
-                        layanan: sSvc, harga: sPrc, time: serverTimestamp()
+                        layanan: sSvc, durasi: durationVal, harga: sTotalPrc, time: serverTimestamp()
                     });
                     orderID = docRef.id.substring(0,5).toUpperCase();
                 }
 
-                // Redirect ke WA
+                // Format Pesan WA Lengkap
                 const myWA = "62895330091464"; 
-                const text = `*ORDER #TS-${orderID}*%0aHalo Titip Salatiga! Saya mau booking layanan *${sSvc}*.%0a%0aNama: ${name}%0aWA: ${phone}%0aAlamat: ${addr}%0aPatokan: ${land || '-'}`;
+                let text = `*ORDER #TS-${orderID}*%0a`;
+                text += `Halo Titip Salatiga! Saya mau booking:%0a%0a`;
+                text += `📦 Layanan: *${sSvc}*%0a`;
+                if(durationVal !== "-") text += `⏳ Durasi: ${durationVal}%0a`;
+                text += `💰 Estimasi: Rp ${sTotalPrc.toLocaleString('id-ID')}%0a%0a`;
+                text += `👤 Nama: ${name}%0a`;
+                text += `📱 WA: ${phone}%0a`;
+                text += `📍 Alamat: ${addr}%0a`;
+                text += `🏠 Patokan: ${land || '-'}`;
                 
                 window.location.href = `https://wa.me/${myWA}?text=${text}`;
                 
             } catch (e) {
                 console.error(e);
-                alert("Ada gangguan koneksi, tapi kami akan tetap arahkan ke WhatsApp.");
-                
-                // Fallback jika database gagal, tetap ke WA
+                // Fallback Offline
                 const myWA = "62895330091464"; 
-                const text = `*ORDER MANUAL*%0aHalo Titip Salatiga! Saya mau booking layanan *${sSvc}*.%0a%0aNama: ${name}%0aWA: ${phone}%0aAlamat: ${addr}`;
+                let text = `*ORDER MANUAL*%0aHalo Titip Salatiga! Saya mau booking *${sSvc}*.%0a%0aNama: ${name}%0aDurasi: ${durationVal}%0aHarga: ${sTotalPrc}%0aAlamat: ${addr}`;
                 window.location.href = `https://wa.me/${myWA}?text=${text}`;
                 
                 btn.disabled = false; 
