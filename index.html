@@ -6,72 +6,38 @@
     <title>Titip Salatiga - Sat Set!</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <style>
-        :root {
-            --primary: #064E3B;
-            --secondary: #F59E0B;
-            --bg-light: #F3F4F6;
-            --white: #FFFFFF;
-            --text-dark: #1F2937;
-        }
-
-        /* ANTI-COPY & PROTECTION */
+        :root { --primary: #064E3B; --secondary: #F59E0B; --bg-light: #F3F4F6; --white: #FFFFFF; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-user-select: none; user-select: none; }
         input, textarea, select { user-select: text; }
-
-        body { background-color: var(--bg-light); color: var(--text-dark); padding-bottom: 80px; }
-
-        .hero {
-            background: linear-gradient(135deg, var(--primary), #022c22);
-            color: var(--white);
-            padding: 40px 20px;
-            border-bottom-right-radius: 30px;
-            border-bottom-left-radius: 30px;
-            box-shadow: 0 10px 20px rgba(6, 78, 59, 0.2);
-            text-align: center;
-        }
+        body { background-color: var(--bg-light); padding-bottom: 100px; }
+        
+        .hero { background: linear-gradient(135deg, var(--primary), #022c22); color: var(--white); padding: 40px 20px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; text-align: center; }
         .logo { font-size: 1.5rem; font-weight: 700; color: var(--secondary); margin-bottom: 10px; }
-        .hero h1 { font-size: 1.8rem; line-height: 1.2; margin-bottom: 10px; }
-        .hero p { font-size: 0.9rem; opacity: 0.9; margin-bottom: 20px; }
+        
+        .instruction { text-align: center; margin-top: 25px; font-weight: 600; color: var(--primary); font-size: 0.9rem; transition: opacity 0.3s; }
+        .instruction i { animation: bounce 2s infinite; }
 
-        .services { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; margin-top: -30px; }
-        .card {
-            background: var(--white); padding: 20px; border-radius: 15px; text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: 0.3s; cursor: pointer; border: 2px solid transparent;
-        }
+        .services { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px 20px 20px 20px; }
+        .card { background: var(--white); padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); cursor: pointer; border: 2px solid transparent; transition: 0.3s; }
         .card.active { border-color: var(--secondary); background: #FFFBEB; transform: scale(1.05); }
         .card i { font-size: 1.5rem; color: var(--primary); margin-bottom: 10px; }
-        .card h3 { font-size: 0.9rem; font-weight: 600; }
+        .card h3 { font-size: 0.85rem; font-weight: 600; }
 
         .form-section { padding: 20px; display: none; animation: slideUp 0.5s ease; }
         .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; color: var(--primary); }
-        .input-group input, .input-group textarea, .input-group select {
-            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 0.9rem; outline: none;
-        }
-
-        .gps-btn {
-            background-color: #ECFDF5; color: var(--primary); border: 1px dashed var(--primary);
-            padding: 10px; width: 100%; border-radius: 10px; cursor: pointer; margin-bottom: 10px;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-
-        .summary-box {
-            background: var(--white); padding: 20px; border-radius: 15px; margin-top: 20px; text-align: center; border: 1px solid #eee;
-        }
-        .price-tag { font-size: 1.5rem; font-weight: 700; color: var(--secondary); margin: 10px 0; }
-
-        .fab-container {
-            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--white);
-            padding: 15px 20px; box-shadow: 0 -4px 10px rgba(0,0,0,0.05); display: none; z-index: 100;
-        }
-        .btn-wa {
-            background-color: var(--secondary); color: var(--primary); width: 100%; padding: 15px;
-            border: none; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 1rem;
-        }
+        .input-group label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 5px; color: var(--primary); }
+        .input-group input, .input-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; outline: none; font-size: 0.9rem; }
+        
+        .gps-btn { background: #ECFDF5; color: var(--primary); border: 1px dashed var(--primary); padding: 12px; width: 100%; border-radius: 10px; cursor: pointer; margin-bottom: 10px; font-weight: 600; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 8px;}
+        
+        .price-tag { font-size: 1.8rem; font-weight: 700; color: var(--secondary); margin: 10px 0; text-align: center; }
+        .fab-container { position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px 20px; background: var(--white); box-shadow: 0 -4px 10px rgba(0,0,0,0.05); display: none; z-index: 100; }
+        .btn-wa { background: var(--secondary); color: var(--primary); width: 100%; padding: 15px; border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-wa:disabled { background: #ccc; cursor: not-allowed; }
 
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-5px);} 60% {transform: translateY(-3px);} }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -79,27 +45,36 @@
     <div class="hero">
         <div class="logo"><i class="fas fa-box"></i> TITIP SALATIGA</div>
         <h1>Barang Aman,<br>Liburan Tenang</h1>
-        <p>Solusi mudik mahasiswa UKSW & UIN.</p>
+        <p>Solusi mudik mahasiswa.</p>
+    </div>
+
+    <div class="instruction" id="instructionBox">
+        <i class="fas fa-arrow-down"></i> Pilih layanan di bawah ini dulu ya.
     </div>
 
     <div class="services">
-        <div class="card" onclick="selectService('Storage', 149000)"><i class="fas fa-warehouse"></i><h3>Titip Barang</h3></div>
-        <div class="card" onclick="selectService('Moving', 250000)"><i class="fas fa-truck-pickup"></i><h3>Pindahan</h3></div>
-        <div class="card" onclick="selectService('Luggage', 50000)"><i class="fas fa-suitcase-rolling"></i><h3>Titip Koper</h3></div>
-        <div class="card" onclick="selectService('Packing', 75000)"><i class="fas fa-box-open"></i><h3>Bantu Packing</h3></div>
+        <!-- Perhatikan fungsi sel() sekarang dipanggil dari script global -->
+        <div class="card" onclick="sel('Storage', 149000)"><i class="fas fa-warehouse"></i><h3>Titip Barang</h3></div>
+        <div class="card" onclick="sel('Moving', 250000)"><i class="fas fa-truck-pickup"></i><h3>Pindahan</h3></div>
+        <div class="card" onclick="sel('Luggage', 50000)"><i class="fas fa-suitcase-rolling"></i><h3>Titip Koper</h3></div>
+        <div class="card" onclick="sel('Packing', 75000)"><i class="fas fa-box-open"></i><h3>Bantu Packing</h3></div>
     </div>
 
     <div class="form-section" id="bookingForm">
-        <h3 style="margin-bottom: 15px; color: var(--primary);">Data Penjemputan</h3>
+        <h3 style="margin-bottom: 15px; color: var(--primary);">Form Booking Sat-Set</h3>
         <div class="input-group"><label>Nama Lengkap</label><input type="text" id="userName" placeholder="Nama panggilanmu"></div>
         <div class="input-group"><label>Nomor WhatsApp</label><input type="tel" id="userPhone" placeholder="08xxxxxxxx"></div>
+        
         <div class="input-group">
-            <label>Lokasi Kos/Rumah</label>
-            <button class="gps-btn" onclick="getGPS()"><i class="fas fa-map-marker-alt"></i> Deteksi Lokasi GPS</button>
-            <textarea id="userAddress" rows="2" placeholder="Alamat lengkap..."></textarea>
+            <label>Lokasi Penjemputan</label>
+            <button class="gps-btn" id="gBtn" onclick="getGPS()"><i class="fas fa-map-marker-alt"></i> Deteksi Lokasi Saya (GPS)</button>
+            <textarea id="userAddress" rows="3" placeholder="Alamat otomatis terisi / ketik manual..."></textarea>
+            <p style="font-size: 0.7rem; color: #666; margin-top: 5px;">*Tips: Gunakan GPS di luar ruangan agar lebih akurat.</p>
         </div>
-        <div class="input-group"><label>Patokan (Ancer-ancer)</label><input type="text" id="userLandmark" placeholder="Contoh: Depan Laundry Biru"></div>
-        <div class="summary-box">
+
+        <div class="input-group"><label>Ancer-ancer / Patokan</label><input type="text" id="userLandmark" placeholder="Contoh: Depan Laundry Biru"></div>
+        
+        <div class="summary-box" style="text-align:center; margin-top:20px;">
             <h4>Estimasi Biaya</h4>
             <div class="price-tag" id="priceDisplay">Rp 149.000</div>
             <p style="font-size: 0.75rem; color: #888;">*Data otomatis tersimpan di sistem kami.</p>
@@ -112,11 +87,73 @@
         </button>
     </div>
 
+    <!-- SCRIPT 1: LOGIKA UI GLOBAL (Agar tidak error saat diklik) -->
+    <script>
+        // Variabel Global
+        let sSvc = "";
+        let sPrc = 0;
+
+        // Fungsi Pilih Layanan
+        function sel(name, price) {
+            sSvc = name; 
+            sPrc = price;
+            
+            // UI Feedback
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            // Tampilkan Form
+            document.getElementById('bookingForm').style.display = 'block';
+            document.getElementById('fabContainer').style.display = 'block';
+            document.getElementById('instructionBox').style.opacity = '0'; // Sembunyikan instruksi
+            
+            // Update Harga
+            document.getElementById('priceDisplay').innerText = 'Rp ' + price.toLocaleString('id-ID');
+            
+            // Scroll ke Form
+            setTimeout(() => {
+                document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        // Fungsi GPS
+        function getGPS() {
+            const btn = document.getElementById('gBtn');
+            const addr = document.getElementById('userAddress');
+
+            if (navigator.geolocation) {
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mencari Lokasi Akurat...';
+                
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    try {
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
+                        const d = await res.json();
+                        addr.value = d.display_name;
+                        btn.innerHTML = '<i class="fas fa-check"></i> Lokasi Ditemukan!';
+                        btn.style.background = '#D1FAE5';
+                    } catch (e) {
+                        addr.value = `Koordinat: ${pos.coords.latitude}, ${pos.coords.longitude} (Isi detail manual ya)`;
+                        btn.innerHTML = 'Gagal ambil nama jalan';
+                    }
+                }, (err) => {
+                    alert("Pastikan GPS HP aktif!");
+                    btn.innerHTML = '<i class="fas fa-redo"></i> Coba Lagi';
+                }, {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                });
+            } else {
+                alert("Browser tidak mendukung GPS");
+            }
+        }
+    </script>
+
+    <!-- SCRIPT 2: MODULE FIREBASE (Hanya untuk simpan data) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // API KEY FIREBASE LU
         const firebaseConfig = {
             apiKey: "AIzaSyAXN8xeNxHwbBxSzMM3c5wpJsoOkfr9LSs",
             authDomain: "titip-salatiga.firebaseapp.com",
@@ -126,31 +163,17 @@
             appId: "1:74240158872:web:5c0fcc17c7071eae5a62b1"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        // Inisialisasi Firebase
+        let db;
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            console.log("Firebase Connected");
+        } catch (e) {
+            console.error("Firebase Error:", e);
+        }
 
-        let sSvc = ''; let sPrc = 0;
-
-        window.selectService = (name, price) => {
-            sSvc = name; sPrc = price;
-            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-            event.currentTarget.classList.add('active');
-            document.getElementById('bookingForm').style.display = 'block';
-            document.getElementById('fabContainer').style.display = 'block';
-            document.getElementById('priceDisplay').innerText = 'Rp ' + price.toLocaleString('id-ID');
-            document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth' });
-        };
-
-        window.getGPS = () => {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(async (pos) => {
-                    const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
-                    const d = await res.json();
-                    document.getElementById('userAddress').value = d.display_name;
-                });
-            }
-        };
-
+        // Assign fungsi booking ke window agar bisa dipanggil HTML
         window.handleBooking = async () => {
             const name = document.getElementById('userName').value;
             const phone = document.getElementById('userPhone').value;
@@ -158,27 +181,41 @@
             const land = document.getElementById('userLandmark').value;
             const btn = document.getElementById('submitBtn');
 
-            if(!name || !phone || !addr) return alert("Lengkapi data dulu ya!");
+            if(!name || !phone || !addr) return alert("Lengkapi data nama, WA, dan alamat dulu ya!");
+            if(!sSvc) return alert("Pilih layanan dulu!");
 
-            btn.disabled = true; btn.innerText = "Sabar, lagi simpen data...";
+            btn.disabled = true; 
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Lagi proses...';
 
             try {
-                // SIMPAN KE FIREBASE (ANTI-GHOSTING)
-                const doc = await addDoc(collection(db, "orders"), {
-                    nama: name, wa: phone, alamat: addr, patokan: land,
-                    layanan: sSvc, harga: sPrc, time: serverTimestamp()
-                });
+                let orderID = "OFFLINE";
+                
+                // Coba simpan ke DB jika koneksi ada
+                if (db) {
+                    const docRef = await addDoc(collection(db, "orders"), {
+                        nama: name, wa: phone, alamat: addr, patokan: land,
+                        layanan: sSvc, harga: sPrc, time: serverTimestamp()
+                    });
+                    orderID = docRef.id.substring(0,5).toUpperCase();
+                }
 
-                // REDIRECT KE WA LU
-                const myWA = "62895330091464"; // <--- NOMOR WA LU UDAH GUA UPDATE!
-                const orderID = doc.id.substring(0,5).toUpperCase();
-                const text = `*ORDER #TS-${orderID}*%0aHalo Titip Salatiga! Saya mau booking layanan *${sSvc}*.%0a%0aNama: ${name}%0aWA: ${phone}%0aAlamat: ${addr}`;
+                // Redirect ke WA
+                const myWA = "62895330091464"; 
+                const text = `*ORDER #TS-${orderID}*%0aHalo Titip Salatiga! Saya mau booking layanan *${sSvc}*.%0a%0aNama: ${name}%0aWA: ${phone}%0aAlamat: ${addr}%0aPatokan: ${land || '-'}`;
                 
                 window.location.href = `https://wa.me/${myWA}?text=${text}`;
-
+                
             } catch (e) {
-                alert("Waduh, koneksi database gagal. Cek Rules di Firebase lu!");
-                btn.disabled = false; btn.innerText = "Konfirmasi Booking ke WA";
+                console.error(e);
+                alert("Ada gangguan koneksi, tapi kami akan tetap arahkan ke WhatsApp.");
+                
+                // Fallback jika database gagal, tetap ke WA
+                const myWA = "62895330091464"; 
+                const text = `*ORDER MANUAL*%0aHalo Titip Salatiga! Saya mau booking layanan *${sSvc}*.%0a%0aNama: ${name}%0aWA: ${phone}%0aAlamat: ${addr}`;
+                window.location.href = `https://wa.me/${myWA}?text=${text}`;
+                
+                btn.disabled = false; 
+                btn.innerHTML = '<i class="fab fa-whatsapp"></i> Konfirmasi Booking ke WA';
             }
         };
     </script>
