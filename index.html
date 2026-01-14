@@ -260,24 +260,26 @@
 
                 // Format Pesan WA Lengkap
                 const myWA = "62895330091464"; 
-                let text = `*ORDER #TS-${orderID}*%0a`;
-                text += `Halo Titip Salatiga! Saya mau booking:%0a%0a`;
-                text += `📦 Layanan: *${sSvc}*%0a`;
-                if(durationVal !== "-") text += `⏳ Durasi: ${durationVal}%0a`;
-                text += `💰 Estimasi: Rp ${sTotalPrc.toLocaleString('id-ID')}%0a%0a`;
-                text += `👤 Nama: ${name}%0a`;
-                text += `📱 WA: ${phone}%0a`;
-                text += `📍 Alamat: ${addr}%0a`;
+                // Ganti %0a jadi \n dan encode seluruh text biar karakter #, spasi, enter aman
+                let text = `*ORDER #TS-${orderID}*\n`;
+                text += `Halo Titip Salatiga! Saya mau booking:\n\n`;
+                text += `📦 Layanan: *${sSvc}*\n`;
+                if(durationVal !== "-") text += `⏳ Durasi: ${durationVal}\n`;
+                text += `💰 Estimasi: Rp ${sTotalPrc.toLocaleString('id-ID')}\n\n`;
+                text += `👤 Nama: ${name}\n`;
+                text += `📱 WA: ${phone}\n`;
+                text += `📍 Alamat: ${addr}\n`;
                 text += `🏠 Patokan: ${land || '-'}`;
                 
-                window.location.href = `https://wa.me/${myWA}?text=${text}`;
+                // PENTING: encodeURIComponent agar # dan spasi tidak memotong link
+                window.location.href = `https://wa.me/${myWA}?text=${encodeURIComponent(text)}`;
                 
             } catch (e) {
                 console.error(e);
                 // Fallback Offline
                 const myWA = "62895330091464"; 
-                let text = `*ORDER MANUAL*%0aHalo Titip Salatiga! Saya mau booking *${sSvc}*.%0a%0aNama: ${name}%0aDurasi: ${durationVal}%0aHarga: ${sTotalPrc}%0aAlamat: ${addr}`;
-                window.location.href = `https://wa.me/${myWA}?text=${text}`;
+                let text = `*ORDER MANUAL*\nHalo Titip Salatiga! Saya mau booking *${sSvc}*.\n\nNama: ${name}\nDurasi: ${durationVal}\nHarga: ${sTotalPrc}\nAlamat: ${addr}`;
+                window.location.href = `https://wa.me/${myWA}?text=${encodeURIComponent(text)}`;
                 
                 btn.disabled = false; 
                 btn.innerHTML = '<i class="fab fa-whatsapp"></i> Konfirmasi Booking ke WA';
